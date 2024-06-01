@@ -2,19 +2,31 @@
 #include <stdlib.h>
 #include <string.h>
 #define MAX 512
+int printingIndex(char html[]) {
+    int printIndex = 0;
+    for (int i=0; i < 100; i++) {
+        if (html[i] == '>') {
+            printIndex = i;
+            break;
+        }
+    }
+    return printIndex;
+}
 void parseText(char html[],char tagType,int FoundAT,int strLen) {
+    int pIndex = printingIndex(html);
     if (tagType == 'b') {
         printf("\n-----------\n");
         printf("|");
-        for (int j=FoundAT+7; html[j] != '<' && j < strLen; j++) {
+        for (int j=FoundAT+pIndex; html[j] != '<' && j < strLen; j++) {
             printf("%c",html[j]);
         }
     
         printf("  |");
         printf("\n-----------\n"); 
     }
+
     else if (tagType == 'h') {
-        for(int i=FoundAT+3; html[i]!= '<' && i < strLen; i++) {
+        for(int i=FoundAT+pIndex; html[i]!= '<' && i < strLen; i++) {
             printf("%c",html[i]);
         }
     }
@@ -30,8 +42,6 @@ void parse(char html[]) {
             parseText(html, 'h',i,strLen);   
             printf("\n");
         }
-        
-       
     }
 }
 
